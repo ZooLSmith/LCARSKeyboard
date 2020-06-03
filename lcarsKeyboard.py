@@ -2,16 +2,10 @@
 # 					LCARS Keyboard
 # 	Author: @ZooL_Smith
 #
-#
 # using "keyboard" and "mouse" by BoppreH
 # 		https://pypi.org/project/keyboard/
 # 		https://pypi.org/project/mouse/
 # ===============================================
-
-
-
-
-
 
 
 import keyboard
@@ -28,23 +22,30 @@ prefixFolder = "./sounds/"
 def getSounds(folder):
 	return glob.glob(prefixFolder+folder+"/*.wav")
 
-soundsDefault = getSounds("default")
-soundsEnter = getSounds("enter")
-soundsEscape = getSounds("escape")
-soundsTab = getSounds("tab")
-soundsDn = getSounds("down")
-soundsUp = getSounds("up")
-soundsLeft = getSounds("left")
-soundsRight = getSounds("right")
-soundsSpace = getSounds("space")
-soundsReturn = getSounds("return")
-soundsCtrl = getSounds("ctrl")
-soundsShift = getSounds("shift")
-soundsWheelDn = getSounds("wheeldown")
-soundsWheelUp = getSounds("wheelup")
-soundsClickLeft = getSounds("clickleft")
-soundsClickRight = getSounds("clickright")
-soundsClickOther = getSounds("space")
+soundsDefault = 		getSounds("default")
+soundsEnter = 			getSounds("enter")
+soundsEscape = 			getSounds("escape")
+soundsTab = 			getSounds("tab")
+soundsDn = 				getSounds("down")
+soundsUp = 				getSounds("up")
+soundsLeft = 			getSounds("left")
+soundsRight = 			getSounds("right")
+soundsSpace = 			getSounds("space")
+soundsBack = 			getSounds("back")
+soundsCtrl = 			getSounds("ctrl")
+soundsShift = 			getSounds("shift")
+soundsAlt = 			getSounds("alt")
+soundsLogo = 			getSounds("logo")
+soundsNumbers = 		getSounds("num")
+soundsFunction = 		getSounds("func")
+soundsGoto = 			getSounds("goto")
+soundsSpecialFunction = getSounds("specialfunc")
+
+soundsWheelDn = 		getSounds("wheeldown")
+soundsWheelUp = 		getSounds("wheelup")
+soundsClickLeft = 		getSounds("clickleft")
+soundsClickRight = 		getSounds("clickright")
+soundsClickOther = 		getSounds("clickother")
 
 
 global currentSound
@@ -92,9 +93,15 @@ def getSndKeyboard(key):
 	elif(sc == 28):					playFile(getRandom(soundsEnter))
 	elif(sc == 57):					playFile(getRandom(soundsSpace))
 	elif(sc == 15):					playFile(getRandom(soundsTab))
-	elif(sc == 14):					playFile(getRandom(soundsReturn))
+	elif(sc == 71 or sc == 79):		playFile(getRandom(soundsGoto))
+	elif(sc == 14 or sc == 83):		playFile(getRandom(soundsBack))
+	elif(sc>1 and sc<14):			playFile(getRandom(soundsNumbers))
 	elif(sc == 29):					playFileNoHold(getRandom(soundsCtrl), sc)
+	elif(sc == 56 or sc == 541):	playFileNoHold(getRandom(soundsAlt), sc)
 	elif(sc == 42 or sc == 54):		playFileNoHold(getRandom(soundsShift), sc)
+	elif(sc == 91 or sc == 92):		playFileNoHold(getRandom(soundsLogo), sc)
+	elif(sc>58 and sc<69)or(sc>86 and sc<89):			playFileNoHold(getRandom(soundsFunction), sc)
+	elif(sc==55 or sc==69 or sc==70):					playFileNoHold(getRandom(soundsSpecialFunction), sc)
 	else:							playFile(0)
 	
 	if(debug): print(key.scan_code)
@@ -127,4 +134,4 @@ keyboard.on_press(pressKeyboard)
 keyboard.on_release(releaseKeyboard)
 
 while True:
-	time.sleep(1)
+	time.sleep(1000)

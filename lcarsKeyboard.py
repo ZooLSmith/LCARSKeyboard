@@ -16,7 +16,8 @@ import glob
 import random
 import os.path
 
-debug = False
+debug = True
+scrollDelay = 0.075
 
 prefixFolder = "./sounds/"
 def getSounds(folder):
@@ -63,12 +64,12 @@ def getSndMouse(key):
 		else:							playFile(getRandom(soundsClickOther))
 		
 	elif(isinstance(key, mouse.WheelEvent)):
-		if(key.delta>0.20):				playFile(getRandom(soundsWheelUp))
-		elif(key.delta<-0.20):			playFile(getRandom(soundsWheelDn))
+		if(key.delta>0.20):				playFileScrollDelay(getRandom(soundsWheelUp),key.time)
+		elif(key.delta<-0.20):			playFileScrollDelay(getRandom(soundsWheelDn),key.time)
 		
-		
-	print(key)
+	if(debug): print(key)
 	
+lastScroll = 0
 heldArray = []
 
 def releaseKeyboard(key):
@@ -86,6 +87,7 @@ def getSndKeyboard(key):
 	sc = key.scan_code
 	
 	if(sc == 1):					playFile(getRandom(soundsEscape))
+	elif(key.is_keypad):			playFile(getRandom(soundsNumbers))
 	elif(sc == 73 or sc == 72):		playFile(getRandom(soundsUp))
 	elif(sc == 81 or sc == 80):		playFile(getRandom(soundsDn))
 	elif(sc == 75):					playFile(getRandom(soundsLeft))
@@ -100,8 +102,8 @@ def getSndKeyboard(key):
 	elif(sc == 56 or sc == 541):	playFileNoHold(getRandom(soundsAlt), sc)
 	elif(sc == 42 or sc == 54):		playFileNoHold(getRandom(soundsShift), sc)
 	elif(sc == 91 or sc == 92):		playFileNoHold(getRandom(soundsLogo), sc)
-	elif(sc>58 and sc<69)or(sc>86 and sc<89):			playFileNoHold(getRandom(soundsFunction), sc)
-	elif(sc==55 or sc==69 or sc==70):					playFileNoHold(getRandom(soundsSpecialFunction), sc)
+	elif(sc>58 and sc<69)or(sc>86 and sc<89):					playFileNoHold(getRandom(soundsFunction), sc)
+	elif((sc==55 and not key.is_keypad) or sc==69 or sc==70 or sc==58):	playFileNoHold(getRandom(soundsSpecialFunction), sc)
 	else:							playFile(0)
 	
 	if(debug): print(key.scan_code)
@@ -112,7 +114,14 @@ def getRandom(arr):
 		return 0
 	else:
 		return random.choice(arr)
-	
+
+def playFileScrollDelay(fileName, t):
+	global lastScroll
+	global scrollDelay
+	if(t>lastScroll+scrollDelay):
+		playFile(fileName)
+		lastScroll = t
+
 def playFileNoHold(fileName, sc):
 	if(heldArray.count(sc)<1):
 		playFile(fileName)

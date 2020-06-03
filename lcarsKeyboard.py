@@ -63,8 +63,8 @@ def getSndMouse(key):
 		else:							playFile(getRandom(soundsClickOther))
 		
 	elif(isinstance(key, mouse.WheelEvent)):
-		if(key.delta>0.99):				playFile(getRandom(soundsWheelUp))
-		elif(key.delta<-0.99):			playFile(getRandom(soundsWheelDn))
+		if(key.delta>0.20):				playFile(getRandom(soundsWheelUp))
+		elif(key.delta<-0.20):			playFile(getRandom(soundsWheelDn))
 		
 		
 	print(key)

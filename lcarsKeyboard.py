@@ -19,7 +19,7 @@ import glob
 import random
 import os.path
 
-debug = False
+debug = True
 scrollDelay = 0.075
 enabled = True
 
@@ -97,25 +97,25 @@ def getSndKeyboard(key):
 	currentSound.stop()
 	sc = key.scan_code
 	
-	if(sc == 1):					playFile(getRandom(soundsEscape))
-	elif(key.is_keypad):			playFile(getRandom(soundsNumbers))
-	elif(sc == 73 or sc == 72):		playFile(getRandom(soundsUp))
-	elif(sc == 81 or sc == 80):		playFile(getRandom(soundsDn))
-	elif(sc == 75):					playFile(getRandom(soundsLeft))
-	elif(sc == 77):					playFile(getRandom(soundsRight))
-	elif(sc == 28):					playFile(getRandom(soundsEnter))
-	elif(sc == 57):					playFile(getRandom(soundsSpace))
-	elif(sc == 15):					playFile(getRandom(soundsTab))
-	elif(sc == 71 or sc == 79):		playFile(getRandom(soundsGoto))
-	elif(sc == 14 or sc == 83):		playFile(getRandom(soundsBack))
-	elif(sc>1 and sc<14):			playFile(getRandom(soundsNumbers))
-	elif(sc == 29):					playFileNoHold(getRandom(soundsCtrl), sc)
-	elif(sc == 56 or sc == 541):	playFileNoHold(getRandom(soundsAlt), sc)
-	elif(sc == 42 or sc == 54):		playFileNoHold(getRandom(soundsShift), sc)
-	elif(sc == 91 or sc == 92):		playFileNoHold(getRandom(soundsLogo), sc)
-	elif(sc>58 and sc<69)or(sc>86 and sc<89):					playFileNoHold(getRandom(soundsFunction), sc)
-	elif((sc==55 and not key.is_keypad) or sc==69 or sc==70 or sc==58):	playFileNoHold(getRandom(soundsSpecialFunction), sc)
-	else:							playFile(0)
+	if(sc == 1):					playFile(getRandom(soundsEscape))	# Escape key
+	elif(key.is_keypad and ((sc>78 and sc<82)or(sc>74 and sc<78)or(sc>70 and sc<74))):	playFile(getRandom(soundsNumbers))	# Numpad Numbers
+	elif(sc == 73 or sc == 72):		playFile(getRandom(soundsUp))				# Up and PGUP
+	elif(sc == 81 or sc == 80):		playFile(getRandom(soundsDn))				# Down and PGDN
+	elif(sc == 75):					playFile(getRandom(soundsLeft))				# Left arrow
+	elif(sc == 77):					playFile(getRandom(soundsRight))			# Right arrow
+	elif(sc == 28):					playFile(getRandom(soundsEnter))			# Enter keys
+	elif(sc == 57):					playFile(getRandom(soundsSpace))			# Spacebar
+	elif(sc == 15):					playFile(getRandom(soundsTab))				# Tab
+	elif(sc == 71 or sc == 79):		playFile(getRandom(soundsGoto))				# Home and End
+	elif(sc == 14 or sc == 83):		playFile(getRandom(soundsBack))				# Backspace and del
+	elif(sc>1 and sc<14):			playFile(getRandom(soundsNumbers))			# Number keys
+	elif(sc == 29):					playFileNoHold(getRandom(soundsCtrl), sc)	# CTRLs
+	elif(sc == 56 or sc == 541):	playFileNoHold(getRandom(soundsAlt), sc)	# ALT and ALTGR
+	elif(sc == 42 or sc == 54):		playFileNoHold(getRandom(soundsShift), sc)	# Shifts
+	elif(sc == 91 or sc == 92):		playFileNoHold(getRandom(soundsLogo), sc)	# Window keys
+	elif(sc>58 and sc<69)or(sc>86 and sc<89):					playFileNoHold(getRandom(soundsFunction), sc)	# Function keys
+	elif((sc==55 and not key.is_keypad) or sc==69 or sc==70 or sc==58):	playFileNoHold(getRandom(soundsSpecialFunction), sc) # Special keys, locks
+	else:							playFile(0)		# Unknown or default keys
 	
 
 def getRandom(arr):

@@ -20,4 +20,10 @@ Alternatively use launch.bat
 
 Hasn't been tested on linux.
 
+# Credits
+
+- Sounds were taken from http://www.trekcore.com/audio/
+- Keyboard and Mouse libraries by BoppreH
+- simpleaudio library by Joe Hamilton
+
 # Enjoy

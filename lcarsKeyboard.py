@@ -5,6 +5,9 @@
 # using "keyboard" and "mouse" by BoppreH
 # 		https://pypi.org/project/keyboard/
 # 		https://pypi.org/project/mouse/
+#
+# and "simpleaudio" by Joe Hamilton
+#		https://pypi.org/project/simpleaudio/
 # ===============================================
 
 
@@ -16,8 +19,9 @@ import glob
 import random
 import os.path
 
-debug = True
+debug = False
 scrollDelay = 0.075
+enabled = True
 
 prefixFolder = "./sounds/"
 def getSounds(folder):
@@ -48,11 +52,15 @@ soundsClickLeft = 		getSounds("clickleft")
 soundsClickRight = 		getSounds("clickright")
 soundsClickOther = 		getSounds("clickother")
 
+soundsEnabled = 		getSounds("enabled")
+soundsDisabled = 		getSounds("disabled")
+
 
 global currentSound
-currentSound = simpleaudio.WaveObject.from_wave_file(soundsDefault[0]).play()
+currentSound = simpleaudio.WaveObject.from_wave_file(random.choice(soundsEnabled)).play()
 
 def getSndMouse(key):
+	if(not enabled): return
 	if(isinstance(key, mouse.MoveEvent)):
 		return
 	if(isinstance(key, mouse.ButtonEvent) and key.event_type == 'up'):
@@ -73,10 +81,13 @@ lastScroll = 0
 heldArray = []
 
 def releaseKeyboard(key):
+	if(not enabled): return
 	if(heldArray.count(key.scan_code)>0):
 		heldArray.remove(key.scan_code)
-	
+
 def pressKeyboard(key):
+	if(debug): print(("{M} " if not enabled else "") + str(key.scan_code),"-","["+key.name+"]")
+	if(not enabled): return
 	getSndKeyboard(key)
 	if(heldArray.count(key.scan_code)<1):
 		heldArray.append(key.scan_code)
@@ -106,8 +117,6 @@ def getSndKeyboard(key):
 	elif((sc==55 and not key.is_keypad) or sc==69 or sc==70 or sc==58):	playFileNoHold(getRandom(soundsSpecialFunction), sc)
 	else:							playFile(0)
 	
-	if(debug): print(key.scan_code)
-	
 
 def getRandom(arr):
 	if(len(arr)<1):
@@ -131,16 +140,23 @@ def playFile(fileName):
 		if(len(soundsDefault)>0):
 			currentSound = simpleaudio.WaveObject.from_wave_file(random.choice(soundsDefault)).play()
 		else:
-			print("NO DEFAULT FILE!")
+			print("NO DEFAULT FILES!")
 	else:
 		currentSound = simpleaudio.WaveObject.from_wave_file(fileName).play()
 	
-
-
+def toggleEnabled():
+	global enabled
+	enabled = not enabled
+	print("LCARSKeyboard is now", "enabled" if enabled else "disabled" )
+	if(enabled):
+		playFile(getRandom(soundsEnabled))
+	else:
+		playFile(getRandom(soundsDisabled))
 
 mouse.hook(getSndMouse)
 keyboard.on_press(pressKeyboard)
 keyboard.on_release(releaseKeyboard)
+keyboard.add_word_listener("lcars", toggleEnabled, triggers=['backspace'], match_suffix=False, timeout=10)
 
 while True:
 	time.sleep(1000)

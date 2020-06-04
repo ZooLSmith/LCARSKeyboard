@@ -3,6 +3,10 @@
 All WAV files inside each sound folder are loaded and randomly played. Feel free to add, remove or replace them.
 If there is none, it'll use the default folder's sounds.
 
+# Disabling/Enabling
+
+Type LCARS then hit BACKSPACE to toggle sounds.
+
 # Requirements
 
 Requirements are in requirements.txt
